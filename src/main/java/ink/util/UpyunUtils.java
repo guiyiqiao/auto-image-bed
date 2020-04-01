@@ -1,6 +1,11 @@
 package ink.util;
 
 import com.upyun.UpYunUtils;
+import ink.property.UpyunProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +14,19 @@ import java.util.List;
  * @Date 2020/3/11 10:32
  * @Version 1.0
  */
+@Component
 public class UpyunUtils {
-    public static final String bucket = "bucket";
-    public static final String userName = "userName";
-    public static final String password = "password";
-    public static final String secret = "secret";
-    public static final String path = "/path/";
+    private  static UpyunProperties upyunProperties;
 
-    public static List<String> string2List( String str){
+    @Autowired
+    private UpyunProperties properties;
+
+    @PostConstruct
+    public void getUpyunProperties(){
+        upyunProperties = properties;
+    }
+
+    public static List<String> string2List(String str){
         List<String> strings = new ArrayList<>();
         String[] strs = str.split("\\s+");
         for(int i =0; i < strs.length;i+=4){
@@ -26,15 +36,14 @@ public class UpyunUtils {
     }
     public static String getUpt(String uri){
         String etime = getTimeStamp();
-        //有效时间为10分钟
-        String s =secret+"&"+etime+"&"+uri;
+        String s =upyunProperties.getSecret()+"&"+etime+"&"+uri;
         String sign = UpYunUtils.md5(s);
         String token = sign.substring(12,20)+etime;
-        return "_upt="+token;
+        return upyunProperties.getUrl()+uri+"?"+"_upt="+token;
     }
     private static String getTimeStamp() {
         long time = System.currentTimeMillis();
-        String nowTimeStamp = String.valueOf((time / 1000)+600);
+        String nowTimeStamp = String.valueOf((time / 1000)+upyunProperties.getExpire_seconds());
         return nowTimeStamp;
     }
 }
