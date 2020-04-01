@@ -47,8 +47,8 @@ upyun.expire_seconds =600
 #默认防盗链过期时间
 ```
 ## 项目地址
-github:
-gitee:
+github: https://github.com/guiyiqiao/auto-image-bed.git    
+gitee: https://gitee.com/guiyiqiao/imagebed.git 
 
 
 
