@@ -30,6 +30,7 @@ spring.redis.port=6379
 spring.redis.jedis.pool.max-wait=-1
 spring.redis.timeout=1000
 # 上面仅为 application.properties 的其他参数示例
+
 upyun.bucket_name =bucket 
 # 服务名
 upyun.url = url
